@@ -1,0 +1,163 @@
+{% extends "layout.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="container">
+        {% if user.status == 'user' %}
+            <div class="row">
+                <div class="col-6">
+                    <h1>Данные</h1>
+                    <form method="post">
+                        {% csrf_token %}
+                        {% bootstrap_form form layout='horizontal' %}
+                        {% bootstrap_button "Сохранить" button_type="submit" button_class="btn btn-outline-dark" %}
+                    </form>
+                </div>
+                <div class="col-6">
+                    <h1>Предложенные задания</h1>
+                    {% for connection in connections %}
+                        {% if connection.user == user %}
+                            <div class="card" style="margin-top: 15px">
+                                <div class="card-header" style="background-color: #6699FF; color: white">
+                                   {{ connection.task.name }}
+                                </div>
+                                <div class="card-body">
+                                    <blockquote class="blockquote mb-0">
+                                        <p>{{ connection.task.description }}</p>
+
+                                    </blockquote>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+
+                </div>
+            </div>
+        {% else %}
+            <div style="display: flex; flex-direction: column; font-size: 12px;">
+                <div>
+                    <form method="post">
+                        {% csrf_token %}
+                        {% bootstrap_button  "Запустить алгоритм" button_type="submit" button_class="btn btn-outline-dark" %}
+                    </form>
+                </div>
+
+                <div>
+                    <h1>Связи</h1>
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th scope="col">Логин</th>
+                            <th scope="col">Название задания</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for con in connections %}
+                            <tr>
+                                <th scope="row">{{ con.user }}</th>
+                                <td>{{ con.task }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <h1>Участники</h1>
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th scope="col">Логин</th>
+                            <th scope="col">Математика</th>
+                            <th scope="col">Русский</th>
+                            <th scope="col">Литература</th>
+                            <th scope="col">История</th>
+                            <th scope="col">Музыка</th>
+                            <th scope="col">Химия</th>
+                            <th scope="col">Биология</th>
+                            <th scope="col">Физика</th>
+                            <th scope="col">Экология</th>
+                            <th scope="col">География</th>
+                            <th scope="col">Астрономия</th>
+                            <th scope="col">Технология</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            {% if user.status == 'user' %}
+                                <tr>
+                                    <th scope="row">{{ user.username }}</th>
+                                    <td>{{ user.attributes.mathematics }}</td>
+                                    <td>{{ user.attributes.russian }}</td>
+                                    <td>{{ user.attributes.literature }}</td>
+                                    <td>{{ user.attributes.history }}</td>
+                                    <td>{{ user.attributes.music }}</td>
+                                    <td>{{ user.attributes.chemistry }}</td>
+                                    <td>{{ user.attributes.biology }}</td>
+                                    <td>{{ user.attributes.physics }}</td>
+                                    <td>{{ user.attributes.ecology }}</td>
+                                    <td>{{ user.attributes.geography }}</td>
+                                    <td>{{ user.attributes.astronomy }}</td>
+                                    <td>{{ user.attributes.technology }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h1>Задания</h1>
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th style="width: 2px" scope="col">Название</th>
+                            <th class="col-1" scope="col">Описание</th>
+                            <th scope="col">Математика</th>
+                            <th scope="col">Русский</th>
+                            <th scope="col">Литература</th>
+                            <th scope="col">История</th>
+                            <th scope="col">Музыка</th>
+                            <th scope="col">Химия</th>
+                            <th scope="col">Биология</th>
+                            <th scope="col">Физика</th>
+                            <th scope="col">Экология</th>
+                            <th scope="col">География</th>
+                            <th scope="col">Астрономия</th>
+                            <th scope="col">Технология</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for task in tasks %}
+                            <tr>
+                                <th scope="row">{{ task.name }}</th>
+                                <td class="col-1">{{ task.description }}</td>
+                                <td>{{ task.attributes.mathematics }}</td>
+                                <td>{{ task.attributes.russian }}</td>
+                                <td>{{ task.attributes.literature }}</td>
+                                <td>{{ task.attributes.history }}</td>
+                                <td>{{ task.attributes.music }}</td>
+                                <td>{{ task.attributes.chemistry }}</td>
+                                <td>{{ task.attributes.biology }}</td>
+                                <td>{{ task.attributes.physics }}</td>
+                                <td>{{ task.attributes.ecology }}</td>
+                                <td>{{ task.attributes.geography }}</td>
+                                <td>{{ task.attributes.astronomy }}</td>
+                                <td>{{ task.attributes.technology }}</td>
+                            </tr>
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+
+        {% endif %}
+
+    </div>
+
+
+{% endblock %}
